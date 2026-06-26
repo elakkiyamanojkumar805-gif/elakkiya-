@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Selva Elakkiya — Frontend Developer Portfolio</title>
+  <meta name="description" content="Portfolio of Selva Elakkiya — Frontend Developer | Final year B.Tech AI & DS" />
+  <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+  <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap)" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --card: #111827;
+      --muted: #94a3b8;
+      --text: #e5e7eb;
+      --accent: #7c3aed;   /* purple */
+      --accent-2: #22d3ee; /* cyan */
+      --ring: rgba(124,58,237,0.3);
+      --shadow: 0 15px 35px rgba(0,0,0,0.45);
+      --radius: 16px;
+      --blur: 30px;
+      --grad: linear-gradient(135deg, var(--accent), var(--accent-2));
+    }
+
+    /* Theme variations */
+    .theme-sunset {
+      --bg: #0f0a1f;
+      --card: #1a132b;
+      --text: #f3e8ff;
+      --muted: #c7b9e6;
+      --accent: #ff7a59;
+      --accent-2: #ffd166;
+      --ring: rgba(255,122,89,0.3);
+      --grad: linear-gradient(135deg, #ff7a59, #ffd166);
+    }
+    .theme-forest {
+      --bg: #0b1a14;
+      --card: #0f2a22;
+      --text: #e8fff6;
+      --muted: #9bd1be;
+      --accent: #22c55e;
+      --accent-2: #2dd4bf;
+      --ring: rgba(34,197,94,0.3);
+      --grad: linear-gradient(135deg, #22c55e, #2dd4bf);
+    }
+    .theme-ocean {
+      --bg: #06141d;
+      --card: #0b2230;
+      --text: #e6f6ff;
+      --muted: #9cc9e3;
+      --accent: #3b82f6;
+      --accent-2: #06b6d4;
+      --ring: rgba(59,130,246,0.3);
+      --grad: linear-gradient(135deg, #3b82f6, #06b6d4);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(124,58,237,0.25), transparent 60%),
+                  radial-gradient(900px 500px at -10% 10%, rgba(34,211,238,0.2), transparent 50%),
+                  var(--bg);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1100px, 92%); margin: 0 auto; }
+
+    header {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(150%) blur(10px);
+      background: rgba(10,14,24,0.4);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: 0.4px;
+    }
+    .brand-badge {
+      width: 28px; height: 28px; border-radius: 8px; background: var(--grad);
+      box-shadow: 0 8px 20px var(--ring);
+    }
+    .nav-links a {
+      font-weight: 600; font-size: 14px; margin-left: 18px; color: var(--muted);
+    }
+    .theme-toggle {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-radius: 999px; background: var(--card);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted); cursor: pointer;
+    }
+
+    .hero {
+      display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center;
+      padding: 56px 0 24px;
+    }
+    .title {
+      font-size: clamp(28px, 5vw, 56px); line-height: 1.05; margin: 0 0 14px 0;
+      letter-spacing: -0.5px;
+    }
+    .title .accent { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .subtitle { color: var(--muted); max-width: 64ch; margin-bottom: 22px; }
+
+    .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn {
+      padding: 12px 18px; border-radius: 12px; font-weight: 700; border: 1px solid transparent;
+      transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+      box-shadow: var(--shadow);
+    }
+    .btn-primary { background: var(--grad); color: #0b0f1a; }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-ghost { background: transparent; color: var(--text); border-color: rgba(255,255,255,0.12); }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.25); transform: translateY(-2px); }
+
+    .avatar-wrap {
+      position: relative; aspect-ratio: 1 / 1; border-radius: 24px; overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(255,255,255,0.05);
+      transform-style: preserve-3d;
+    }
+    .avatar-glow {
+      position: absolute; inset: -60%; background: radial-gradient(circle at 50% 50%, rgba(124,58,237,0.35), transparent 60%);
+      filter: blur(var(--blur)); z-index: 0;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+      from { transform: translate3d(-10%, -8%, 0) rotate(-6deg); }
+      to   { transform: translate3d(8%, 10%, 0) rotate(6deg); }
+    }
+    .avatar {
+      position: relative; z-index: 2; width: 100%; height: 100%;
+      display: grid; place-items: center; color: var(--muted);
+      font-weight: 700; letter-spacing: 1px;
+    }
+
+    section { padding: 36px 0; }
+    .grid {
+      display: grid; gap: 18px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+
+    .card {
+      grid-column: span 12;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .card:hover { box-shadow: 0 25px 55px rgba(0,0,0,0.55); border-color: rgba(255,255,255,0.16); }
+
+    .tilt {
+      perspective: 900px;
+    }
+
+    .card-title {
+      margin: 0 0 12px 0; font-size: 18px; color: var(--muted); font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+    }
+    .item {
+      display: grid; gap: 8px;
+      padding: 14px; border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .badge {
+      display: inline-block; padding: 4px 10px; border-radius: 999px;
+      background: rgba(255,255,255,0.06); color: var(--text); font-weight: 700; font-size: 12px;
+    }
+    .meta { color: var(--muted); font-size: 14px; }
+
+    /* Skills */
+    .skill {
+      display: grid; grid-template-columns: 120px 1fr 44px; gap: 12px; align-items: center;
+      padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+    }
+    .skill-name { font-weight: 700; }
+    .bar {
+      width: 100%; height: 10px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden;
+    }
+    .bar>span {
+      display: block; height: 100%; width: 0%;
+      background: var(--grad);
+      border-radius: 999px;
+      box-shadow: 0 6px 18px var(--ring);
+      transition: width 1.2s ease;
+    }
+    .pct { text-align: right; color: var(--muted); font-weight: 700; }
+
+    /* Projects grid */
+    @media (min-width: 720px) {
+      .col-6 { grid-column: span 6; }
+      .col-4 { grid-column: span 4; }
+    }
+
+    .project {
+      position: relative; overflow: hidden;
+      background: radial-gradient(600px 200px at 100% 0%, rgba(255,255,255,0.07), transparent 60%),
+                  linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 18px;
+      transition: transform .15s ease;
+    }
+    .project:hover { transform: translateY(-4px); }
+    .project h3 { margin: 6px 0 8px; }
+    .project p { margin: 0; color: var(--muted); }
+
+    /* Footer */
+    footer {
+      padding: 28px 0 56px;
+      color: var(--muted); font-size: 14px; text-align: center;
+    }
+
+    /* Appear animations */
+    .reveal { opacity: 0; transform: translateY(14px); transition: all .6s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* Small tweaks */
+    .divider { height: 1px; background: rgba(255,255,255,0.08); margin: 12px 0 18px; }
+    .spacer { height: 10px; }
+
+    /* Accessibility focus ring */
+    :focus-visible {
+      outline: 2px solid transparent;
+      box-shadow: 0 0 0 4px var(--ring);
+      border-radius: 12px;
+      transition: box-shadow .2s ease;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand" aria-label="Brand">
+        <div class="brand-badge" aria-hidden="true"></div>
+        <span>Selva Elakkiya</span>
+      </div>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Internships</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        Theme
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3v2m0 14v2m9-9h-2M5 12H3m14.95 6.95-1.41-1.41M7.46 7.46 6.05 6.05m11.31 0-1.41 1.41M7.46 16.54 6.05 17.95" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1 class="title reveal">
+          Hi, I'm <span class="accent">Selva Elakkiya</span>
+        </h1>
+        <p class="subtitle reveal" style="transition-delay:.08s">
+          Frontend Developer • Final year B.Tech in AI & Data Science. I build fast, accessible web apps with delightful interactions, animations, and clean code.
+        </p>
+        <div class="cta-row reveal" style="transition-delay:.12s">
+          <a class="btn btn-primary" href="#projects">View Projects</a>
+          <a class="btn btn-ghost" href="#contact">Get in Touch</a>
+        </div>
+      </div>
+
+      <!-- Decorative avatar with 3D tilt -->
+      <div class="tilt reveal" style="transition-delay:.16s">
+        <div class="avatar-wrap" data-tilt>
+          <div class="avatar-glow"></div>
+          <div class="avatar">
+            <div>
+              <div style="font-size:18px; opacity:.9;">SE</div>
+              <div style="font-size:12px; color:var(--muted);">Frontend Developer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="grid">
+        <article class="card reveal">
+          <h2 class="card-title">About</h2>
+          <p>
+            I'm Selva Elakkiya, a frontend developer passionate about crafting responsive interfaces, smooth animations, and immersive 3D-like effects on the web.
+            I enjoy turning ideas into experiences that feel fast and intuitive.
+          </p>
+          <div class="divider"></div>
+          <div class="item">
+            <strong>Education</strong>
+            <span class="meta">Final year student — B.Tech in Artificial Intelligence & Data Science</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="grid">
+        <article class="card reveal">
+          <h2 class="card-title">Skills</h2>
+          <div class="spacer"></div>
+
+          <div class="skill">
+            <div class="skill-name">HTML</div>
+            <div class="bar"><span style="--target:95%" data-pct="95"></span></div>
+            <div class="pct">95%</div>
+          </div>
+
+          <div class="skill">
+            <div class="skill-name">CSS</div>
+            <div class="bar"><span style="--target:90%" data-pct="90"></span></div>
+            <div class="pct">90%</div>
+          </div>
+
+          <div class="skill">
+            <div class="skill-name">Python</div>
+            <div class="bar"><span style="--target:90%" data-pct="90"></span></div>
+            <div class="pct">90%</div>
+          </div>
+
+          <div class="skill">
+            <div class="skill-name">Java</div>
+            <div class="bar"><span style="--target:85%" data-pct="85"></span></div>
+            <div class="pct">85%</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="grid">
+        <article class="card reveal">
+          <h2 class="card-title">Internships</h2>
+          <div class="item">
+            <div><span class="badge">Frontend Developer</span></div>
+            <div class="meta">Built responsive components, stateful UI patterns, and accessible design systems.</div>
+          </div>
+          <div class="item">
+            <div><span class="badge">Web Development</span></div>
+            <div class="meta">Developed dynamic websites with animations, SEO-friendly markup, and performance tuning.</div>
+          </div>
+          <div class="item">
+            <div><span class="badge">Full Stack Development</span></div>
+            <div class="meta">End-to-end features: REST APIs, database models, and modern frontend integration.</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="grid">
+        <article class="card reveal">
+          <h2 class="card-title">Projects</h2>
+          <div class="grid">
+            <div class="col-4 project" data-tilt>
+              <span class="badge">IoT</span>
+              <h3>IoT Home Automation</h3>
+              <p>Control home appliances via web dashboard; real-time device status and scheduling.</p>
+              <div class="meta">Tech: HTML, CSS, JS, MQTT/HTTP</div>
+            </div>
+
+            <div class="col-4 project" data-tilt>
+              <span class="badge">Web</span>
+              <h3>Personal Portfolio Website</h3>
+              <p>Fast, animated portfolio with theme switcher, 3D tilt, and responsive design.</p>
+              <div class="meta">Tech: HTML, CSS, JS</div>
+            </div>
+
+            <div class="col-4 project" data-tilt>
+              <span class="badge">AI</span>
+              <h3>Student Doubt-Solving Chatbot</h3>
+              <p>AI chatbot to answer course questions; intent detection and FAQ retrieval.</p>
+              <div class="meta">Tech: Python, NLP, Flask</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="grid">
+        <article class="card reveal">
+          <h2 class="card-title">Contact</h2>
+          <p class="meta">Open to internships and full-time roles in frontend and web development.</p>
+          <div class="spacer"></div>
+          <div class="grid">
+            <div class="col-6 item">
+              <strong>Email</strong>
+              <a href="mailto:selva@example.com" class="meta">selva@example.com</a>
+            </div>
+            <div class="col-6 item">
+              <strong>LinkedIn</strong>
+              <a href="[linkedin.com](https://www.linkedin.com/in/selva-elakkiya)" target="_blank" rel="noopener" class="meta">linkedin.com/in/selva-elakkiya</a>
+            </div>
+            <div class="col-6 item">
+              <strong>GitHub</strong>
+              <a href="[github.com](https://github.com/selva-elakkiya)" target="_blank" rel="noopener" class="meta">github.com/selva-elakkiya</a>
+            </div>
+            <div class="col-6 item">
+              <strong>Location</strong>
+              <span class="meta">India</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Selva Elakkiya. Built with semantic HTML, modern CSS, and vanilla JS.
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Theme toggle (cycles through themes)
+    const themes = ['', 'theme-sunset', 'theme-forest', 'theme-ocean'];
+    const root = document.documentElement;
+    const saved = localStorage.getItem('theme') || '';
+    if (saved) root.classList.add(saved);
+    let idx = themes.indexOf(saved === null ? '' : saved);
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      root.classList.remove(...themes);
+      idx = (idx + 1) % themes.length;
+      const next = themes[idx];
+      if (next) root.classList.add(next);
+      localStorage.setItem('theme', next);
+    });
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .card, .project').forEach(el => io.observe(el));
+
+    // Animate skill bars after reveal
+    const bars = document.querySelectorAll('.bar > span');
+    const ioBars = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const el = e.target;
+          const pct = el.getAttribute('data-pct') || '0';
+          requestAnimationFrame(() => { el.style.width = pct + '%'; });
+          ioBars.unobserve(el);
+        }
+      });
+    }, { threshold: 0.4 });
+    bars.forEach(b => ioBars.observe(b));
+
+    // Lightweight 3D tilt effect
+    function attachTilt(card) {
+      let rect;
+      function onMove(e) {
+        rect = rect || card.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const x = (e.clientX - cx) / (rect.width / 2);
+        const y = (e.clientY - cy) / (rect.height / 2);
+        const max = 10; // deg
+        card.style.transform = `rotateX(${(-y*max).toFixed(2)}deg) rotateY(${(x*max).toFixed(2)}deg) translateZ(0)`;
+      }
+      function onLeave() {
+        card.style.transform = 'rotateX(0) rotateY(0) translateZ(0)';
+        rect = null;
+      }
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', onLeave);
+      // Touch fallback: small press animation
+      card.addEventListener('touchstart', () => { card.style.transform = 'scale(0.98)'; }, {passive:true});
+      card.addEventListener('touchend',   () => { card.style.transform = ''; }, {passive:true});
+    }
+    document.querySelectorAll('[data-tilt]').forEach(attachTilt);
+  </script>
+</body>
+</html>
